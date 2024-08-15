@@ -28,13 +28,6 @@ export const SignUp = () => {
   });
   const navigate = useNavigate();
 
-  const updateUserInfo = (data: { [userData: string]: string }) => {
-    setUserInfo((prevUserInfo) => ({
-      ...prevUserInfo,
-      ...data,
-    }));
-  };
-
   const handleNextClick = () => {
     setStep((step) => step + 1);
   };
@@ -47,13 +40,22 @@ export const SignUp = () => {
 
     setStep((step) => step - 1);
   };
+
+  const updateUserInfo = (data: { [userData: string]: string }) => {
+    setUserInfo((prevUserInfo) => ({
+      ...prevUserInfo,
+      ...data,
+    }));
+    handleNextClick();
+  };
+
   return (
     <S.FlexColumn>
       <Header previous previousFunction={handlePreviousClick} title="회원가입" />
       <S.Content>
         {step === 0 && <TermsOfService handleNextClick={handleNextClick} />}
-        {step === 1 && <SignUpIdPassword updateUserInfo={updateUserInfo} handleNextClick={handleNextClick} />}
-        {step === 2 && <SignUpNickName updateUserInfo={updateUserInfo} handleNextClick={handleNextClick} />}
+        {step === 1 && <SignUpIdPassword updateUserInfo={updateUserInfo} />}
+        {step === 2 && <SignUpNickName updateUserInfo={updateUserInfo} />}
         {step === 3 && <SignUpAuthPhoneNumber userInfo={userInfo} updateUserInfo={updateUserInfo} />}
       </S.Content>
     </S.FlexColumn>

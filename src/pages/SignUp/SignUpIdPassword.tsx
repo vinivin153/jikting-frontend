@@ -6,15 +6,13 @@ import { Form } from './style';
 import { fetchUserNameCheck } from 'api/signup';
 
 interface Props {
-  handleNextClick(): void;
   updateUserInfo(data: { [userData: string]: string }): void;
 }
 
-export const SignUpIdPassword = ({ updateUserInfo, handleNextClick }: Props) => {
+export const SignUpIdPassword = ({ updateUserInfo }: Props) => {
   const onSubmit = (data: { [key: string]: string }) => {
     delete data.checkUserPassword;
     updateUserInfo(data);
-    handleNextClick();
   };
 
   const {

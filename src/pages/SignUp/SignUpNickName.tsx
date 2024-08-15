@@ -7,12 +7,11 @@ import { validNickNameCheck } from 'validation';
 import { fetchNickNameCheck } from 'api/signup';
 
 interface Props {
-  handleNextClick(): void;
   updateUserInfo(data: { [userData: string]: string }): void;
 }
 const genderList = ['남', '여'];
 
-export const SignUpNickName = ({ updateUserInfo, handleNextClick }: Props) => {
+export const SignUpNickName = ({ updateUserInfo }: Props) => {
   const [selectedGender, setSelectedGender] = useState('');
   const {
     register,
@@ -27,7 +26,6 @@ export const SignUpNickName = ({ updateUserInfo, handleNextClick }: Props) => {
   const onSubmit = (data: { [key: string]: string }) => {
     data['userGender'] = selectedGender;
     updateUserInfo(data);
-    handleNextClick();
   };
   return (
     <S.Form onSubmit={handleSubmit(onSubmit)}>
