@@ -4,7 +4,7 @@ import CheckCircle from 'assets/images/checkcircle.svg';
 import { Button } from 'components/Button';
 import { useEffect, useState } from 'react';
 
-export const TermsOfService = ({ handleNextClick }: { handleNextClick: () => void }) => {
+export const TermsOfService = ({ moveNextStep }: { moveNextStep: () => void }) => {
   const TERMS_OF_SERVICE = `**제1조(목적)**
 
   이 약관은 큐피드가 제공하는 제반 서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.
@@ -327,6 +327,12 @@ export const TermsOfService = ({ handleNextClick }: { handleNextClick: () => voi
     setPrivacyPolicyAgree(!allAgree);
   };
 
+  const handleNextClick = () => {
+    if (allAgree) {
+      moveNextStep();
+    }
+  };
+
   return (
     <>
       <S.TermsofServiceBox>
@@ -337,7 +343,7 @@ export const TermsOfService = ({ handleNextClick }: { handleNextClick: () => voi
             height="2.8rem"
             fill={allAgree ? theme.colors.mainPink : theme.colors.buttonGrey}
             stroke={allAgree ? 'white' : 'none'}
-          />{' '}
+          />
           전체 동의하기
         </S.CheckBox>
 
