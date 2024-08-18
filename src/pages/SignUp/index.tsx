@@ -6,6 +6,7 @@ import { SignUpNickName } from './SignUpNickName';
 import { SignUpAuthPhoneNumber } from './SignUpAuthPhoneNumber';
 import { useNavigate } from 'react-router-dom';
 import { TermsOfService } from './TermsOfService';
+import { useFunnel } from 'hooks/useFunnel';
 
 export interface UserInfo {
   userId: string;
@@ -17,7 +18,7 @@ export interface UserInfo {
 }
 
 export const SignUp = () => {
-  const [step, setStep] = useState(0);
+  const { Funnel, step, setStep } = useFunnel();
   const [userInfo, setUserInfo] = useState<UserInfo>({
     userId: '',
     userPassword: '',
@@ -28,7 +29,7 @@ export const SignUp = () => {
   });
   const navigate = useNavigate();
 
-  const handleNextClick = () => {
+  const moveNextStep = () => {
     setStep((step) => step + 1);
   };
 
@@ -46,17 +47,27 @@ export const SignUp = () => {
       ...prevUserInfo,
       ...data,
     }));
-    handleNextClick();
+    moveNextStep();
   };
 
   return (
     <S.FlexColumn>
       <Header previous previousFunction={handlePreviousClick} title="회원가입" />
       <S.Content>
-        {step === 0 && <TermsOfService handleNextClick={handleNextClick} />}
-        {step === 1 && <SignUpIdPassword updateUserInfo={updateUserInfo} />}
-        {step === 2 && <SignUpNickName updateUserInfo={updateUserInfo} />}
-        {step === 3 && <SignUpAuthPhoneNumber userInfo={userInfo} updateUserInfo={updateUserInfo} />}
+        <Funnel>
+          <Funnel.step step={0}>
+            <TermsOfService moveNextStep={moveNextStep} />
+          </Funnel.step>
+          <Funnel.step step={1}>
+            <SignUpIdPassword updateUserInfo={updateUserInfo} />
+          </Funnel.step>
+          <Funnel.step step={2}>
+            <SignUpNickName updateUserInfo={updateUserInfo} />
+          </Funnel.step>
+          <Funnel.step step={3}>
+            <SignUpAuthPhoneNumber userInfo={userInfo} updateUserInfo={updateUserInfo} />
+          </Funnel.step>
+        </Funnel>
       </S.Content>
     </S.FlexColumn>
   );
