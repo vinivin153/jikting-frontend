@@ -31,10 +31,10 @@ interface Recommend {
   personalities: string[];
 }
 
-export type Data = Recommend[];
+export type RecommendTeam = Recommend[];
 
 export const fetchRecommendTeam = async () => {
-  const response: AxiosResponse<Data> = await authenticated.get('/recommends');
+  const response: AxiosResponse<RecommendTeam> = await authenticated.get('/recommends');
   return response;
 };
 
