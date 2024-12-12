@@ -1,16 +1,14 @@
-import { Header } from 'components/Header';
 import * as S from './style';
-import { NavBar } from 'components/NavBar';
 import { Button } from 'components/Button';
 import { theme } from 'styles/theme';
 import { useCallback, useState } from 'react';
 import { CreateTeam } from './CreateTeam';
 import { useQueryTeamInfo } from 'hooks/useTeamInfoQurey';
 import { TeamDetail } from './TeamDetail';
-import { EmptyData } from 'components/EmptyData';
 import ModalPortal from 'components/Modal/ModalPortal';
 import { ModalBottomSheet } from 'components/Modal';
 import { Input } from 'components/Input';
+import { EmptyPage } from 'pages/Empty';
 
 export const TeamList = () => {
   const { isSuccess, isError, data } = useQueryTeamInfo();
@@ -43,31 +41,24 @@ export const TeamList = () => {
 
   if (isError)
     return (
-      <>
-        <S.TeamWrapper>
-          <Header title="팀 리스트" />
-          <EmptyData>
-            <p>소속된 팀이 없습니다</p>
-            <p>팀을 만들어보세요</p>
-          </EmptyData>
-          <NavBar defaultActive="team" />
-          <S.ButtonWrapper>
-            <Button
-              size="medium"
-              title="팀 등록하기"
-              background="#FFEEF2"
-              color={theme.colors.mainPink}
-              onClick={handleRegisterTeamClick}
-            ></Button>
-            <Button
-              size="medium"
-              title="팀 참여하기"
-              background="#FFEEF2"
-              color={theme.colors.mainPink}
-              onClick={hanleModalOpenClick}
-            ></Button>
-          </S.ButtonWrapper>
-        </S.TeamWrapper>
+      <EmptyPage title="팀 리스트" message={`소속된 팀이 없습니다\n 팀을 만들어 보세요`} navDefaultActive="team">
+        <S.ButtonWrapper>
+          <Button
+            size="medium"
+            title="팀 등록하기"
+            background="#FFEEF2"
+            color={theme.colors.mainPink}
+            onClick={handleRegisterTeamClick}
+          ></Button>
+          <Button
+            size="medium"
+            title="팀 참여하기"
+            background="#FFEEF2"
+            color={theme.colors.mainPink}
+            onClick={hanleModalOpenClick}
+          ></Button>
+        </S.ButtonWrapper>
+
         {modalOpen ? (
           <ModalPortal>
             <ModalBottomSheet handleMaskClick={handelModalCloseClick}>
@@ -78,7 +69,7 @@ export const TeamList = () => {
             </ModalBottomSheet>
           </ModalPortal>
         ) : null}
-      </>
+      </EmptyPage>
     );
 
   if (isSuccess && data) return <TeamDetail {...data.data} />;

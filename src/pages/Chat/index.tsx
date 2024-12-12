@@ -4,6 +4,7 @@ import { NavBar } from 'components/NavBar';
 import { useChatListQuery } from 'hooks/useChatQuery';
 import { useState } from 'react';
 import { ChatRoom } from './ChatRoom';
+import { EmptyPage } from 'pages/Empty';
 
 interface ITeam {
   chattingRoomId: number;
@@ -13,7 +14,7 @@ interface ITeam {
 }
 
 export const ChatList = () => {
-  const { isSuccess, data } = useChatListQuery();
+  const { data } = useChatListQuery();
   const [enterChatRoomId, setEnterChatRoomId] = useState(0);
   const hanldeTeamButtonClick = (chattingRoomId: number) => {
     setEnterChatRoomId(chattingRoomId);
@@ -23,7 +24,11 @@ export const ChatList = () => {
     setEnterChatRoomId(0);
   };
 
-  if (isSuccess && data) {
+  if (!data) {
+    return <EmptyPage title="채팅" message={'소속된 팀이 없습니다\n 팀을 만들어 보세요'} navDefaultActive="chat" />;
+  }
+
+  if (data) {
     const chatList = data.data;
     return (
       <S.ChatWrapper>

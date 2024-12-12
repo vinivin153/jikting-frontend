@@ -10,8 +10,8 @@ import { useRecommendTeamQuery } from 'hooks/useMainQuery';
 import { SlideItem } from './SlideItem';
 import { NavBar } from 'components/NavBar';
 import { fetchSendLike, fetchSendPass } from 'api/main';
-import { EmptyData } from 'components/EmptyData';
 import { useQueryClient } from 'react-query';
+import { EmptyPage } from 'pages/Empty';
 
 export const Main = () => {
   const data = useRecommendTeamQuery();
@@ -42,16 +42,8 @@ export const Main = () => {
     }
   }, [debounceScroll]);
 
-  if (data?.length === 0) {
-    return (
-      <S.MainWrapper>
-        <Header title="오늘의 추천" />
-        <EmptyData>
-          <p>더 이상 추천할 팀이 없습니다!</p>
-        </EmptyData>
-        <NavBar defaultActive="main" />
-      </S.MainWrapper>
-    );
+  if (!data) {
+    return <EmptyPage title="오늘의 추천" message="더 이상 추천할 팀이 없습니다!" navDefaultActive="main" />;
   }
 
   if (data) {

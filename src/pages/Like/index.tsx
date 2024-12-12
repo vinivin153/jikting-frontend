@@ -5,6 +5,7 @@ import { KeywordItem } from 'components/Keyword/KeywordItem';
 import { useGetLikeListQuery, useSendLikeListQuery } from 'hooks/useLikeQuery';
 import { fetchAcceptLike } from 'api/like';
 import { useQueryClient } from 'react-query';
+import { EmptyPage } from 'pages/Empty';
 
 export const Like = () => {
   const [selected, setSelected] = useState('get');
@@ -27,6 +28,12 @@ export const Like = () => {
     queryClient.invalidateQueries('getLike');
   };
 
+  if (!getLikeList || !sendLikeList) {
+    return (
+      <EmptyPage title="주고 받은 호감" message={'소속된 팀이 없습니다\n 팀을 만들어 보세요'} navDefaultActive="like" />
+    );
+  }
+
   if (getLikeList || sendLikeList) {
     const data = selected === 'get' ? getLikeList : sendLikeList;
     return (
@@ -39,7 +46,6 @@ export const Like = () => {
             보낸 호감
           </S.TopNavButton>
         </S.TopNavWrapper>
-
         <S.Content>
           {data?.map((item) => {
             const { likeId, name, keywords, description, imageUrls } = item;
